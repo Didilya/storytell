@@ -20,7 +20,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
     USERNAME_FIELD = "email"
 
-    objects = CustomUserManager
+    objects = CustomUserManager()
 
     class Meta:
         verbose_name = "user"

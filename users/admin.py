@@ -61,6 +61,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {"fields": ["email", "password"]}),
         ("Personal info", {"fields": ["first_name", "last_name"]}),
         ("Permissions", {"fields": ["is_admin"]}),
+        ("Photo", {"fields": ["thumbnail"]})
     ]
 
     add_fieldsets = [
@@ -68,7 +69,7 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 "classes": ["wide"],
-                "fields": ["email", "first_name", "last_name", "password1", "password2"],
+                "fields": ["email", "first_name", "last_name", "password1", "password2", "thumbnail"],
             },
         ),
     ]

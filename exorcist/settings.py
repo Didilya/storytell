@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import environ
+import os
+
 env = environ.Env()
 environ.Env.read_env()
 
@@ -28,7 +30,7 @@ SECRET_KEY = "django-insecure-=g2q$n9g^&j)kezzi)z_9_q@sqfr10i1cm8+xy8i!jtk=@*s9^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -60,7 +62,7 @@ ROOT_URLCONF = "exorcist.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -120,9 +122,18 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+# Directory where static files are collected
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static/'),  # Change 'your_app_name' to your actual app name
+]
+
+# For production: Directory where static files are collected by collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Only needed if you are deploying
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.User"
+

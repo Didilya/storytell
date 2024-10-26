@@ -47,7 +47,15 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "email", "password", "thumbnail", "is_active", "is_admin"]
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+            "password",
+            "thumbnail",
+            "is_active",
+            "is_admin",
+        ]
 
 
 class UserAdmin(BaseUserAdmin):
@@ -61,7 +69,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {"fields": ["email", "password"]}),
         ("Personal info", {"fields": ["first_name", "last_name"]}),
         ("Permissions", {"fields": ["is_admin"]}),
-        ("Photo", {"fields": ["thumbnail"]})
+        ("Photo", {"fields": ["thumbnail"]}),
     ]
 
     add_fieldsets = [
@@ -69,7 +77,14 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 "classes": ["wide"],
-                "fields": ["email", "first_name", "last_name", "password1", "password2", "thumbnail"],
+                "fields": [
+                    "email",
+                    "first_name",
+                    "last_name",
+                    "password1",
+                    "password2",
+                    "thumbnail",
+                ],
             },
         ),
     ]

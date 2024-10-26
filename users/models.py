@@ -26,6 +26,9 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         verbose_name = "user"
         verbose_name_plural = "users"
 
+    def __str__(self):
+        return self.email
+
     @property
     def is_staff(self):
         return self.is_admin

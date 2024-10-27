@@ -17,6 +17,12 @@ class Entry(TimeStampedModel):
         on_delete=models.PROTECT,
         related_name="entries",
     )
+    topic = models.ForeignKey(
+        "Topic",
+        on_delete=models.CASCADE,
+        related_name="entries",
+        null=True,
+    )
     text = models.TextField("text of the entry", blank=True, null=True)
     is_deleted = models.BooleanField(default=False)
 

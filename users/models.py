@@ -8,12 +8,13 @@ from users.managers import CustomUserManager
 class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     first_name = models.CharField("first name", max_length=100, blank=True)
     last_name = models.CharField("last name", max_length=100, blank=True)
+    profile_name = models.CharField("profile name", max_length=128, blank=True)
     email = models.EmailField("email address", db_index=True, unique=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     thumbnail = ImageField(
-        upload_to="users_thumbnails/",
-        verbose_name="photo",
+        "thumbnail",
+        upload_to="static/users/users_thumbnails/",
         null=True,
         blank=True,
     )

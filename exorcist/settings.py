@@ -62,7 +62,7 @@ ROOT_URLCONF = "exorcist.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'templates')],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -124,11 +124,11 @@ STATIC_URL = "static/"
 
 # Directory where static files are collected
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static/'),  # Change 'your_app_name' to your actual app name
+    os.path.join(BASE_DIR, "static/"),  # Change 'your_app_name' to your actual app name
 ]
 
 # For production: Directory where static files are collected by collectstatic
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Only needed if you are deploying
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # Only needed if you are deploying
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -136,4 +136,3 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Only needed if you are de
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.User"
-

@@ -1,5 +1,16 @@
 from django.shortcuts import render
+from django.views.generic.base import View, TemplateResponseMixin
+from core.utils import get_topics_entries, get_trending_topics
 
+class MainPageView(TemplateResponseMixin, View):
+    template_name = 'main_page.html'
+
+    def get_todays_trending_data(self):
+        return get_trending_topics()
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_todays_trending_data()
+        return self.render_to_response(request, context)
 
 def top_entries(request):
     context = {

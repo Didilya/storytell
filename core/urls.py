@@ -2,5 +2,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.top_entries, name="top_entries"),
+    path("", views.MainPageView.as_view(), name="top_entries"),
 ]

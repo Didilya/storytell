@@ -1,42 +1,57 @@
+import logging
 from django.shortcuts import render
 from django.views.generic.base import View, TemplateResponseMixin
-from core.utils import get_topics_entries, get_trending_topics
+from core.utils.queries import get_topics_entries, get_trending_topics
+from core.serializers import TopicSerializer, EntrySerializer
+
+logger = logging.getLogger(__name__)
+
+
+test_entries = [
+    {
+        "title": "Some very interesting entry",
+        "content": "This is the content of the first example entry.Let's check how big content can be if I will continue typing how many types I can type?",
+        "user": "Diuser1",
+        "save_count": 6,
+        "thumbnail": "users/users_thumbnails/Screen_Shot_2022-12-08_at_03.55.36.png",
+    },
+    {
+        "title": "not so interesting entry",
+        "content": "Here is some more example content for another entry.",
+        "user": "Touser2",
+        "save_count": 7,
+        "thumbnail": "users/users_thumbnails/tolga_topcu1.jpg",
+    },
+    {
+        "title": "even less interesting entry",
+        "content": "Here is some more example content for another entry.",
+        "user": "user3",
+        "save_count": 10,
+        "thumbnail": "users/users_thumbnails/dilyara_diyarova1.jpg",
+    },
+]
+
 
 class MainPageView(TemplateResponseMixin, View):
-    template_name = 'main_page.html'
-
-    def get_todays_trending_data(self):
-        return get_trending_topics()
+    template_name = "main_page.html"
 
     def get(self, request, *args, **kwargs):
-        context = self.get_todays_trending_data()
-        return self.render_to_response(request, context)
+        top_topics = get_trending_topics()
+        entries = get_topics_entries(top_topics[0].id)
+        entries_data = EntrySerializer(entries, many=True).data
+        top_topics_data = TopicSerializer(top_topics, many=True).data
+        logger.debug(f"entries_data={entries_data}, top_topics_data={top_topics_data}")
+        context = {
+            "entries": test_entries,
+            "chosen_entry": entries_data,
+            "top_topics": top_topics_data,
+        }
+        return self.render_to_response(context)
+
 
 def top_entries(request):
     context = {
-        "entries": [
-            {
-                "title": "Some very interesting entry",
-                "content": "This is the content of the first example entry.Let's check how big content can be if I will continue typing how many types I can type?",
-                "user": "Diuser1",
-                "save_count": 6,
-                "thumbnail": "users/users_thumbnails/dilyara_diyarova1.jpg",
-            },
-            {
-                "title": "not so interesting entry",
-                "content": "Here is some more example content for another entry.",
-                "user": "Touser2",
-                "save_count": 7,
-                "thumbnail": "users/users_thumbnails/tolga_topcu1.jpg",
-            },
-            {
-                "title": "even less interesting entry",
-                "content": "Here is some more example content for another entry.",
-                "user": "user3",
-                "save_count": 10,
-            },
-            # Add more entries as needed
-        ],
+        "entries": test_entries,
         "top_topics": [
             {
                 "title": "Some topic that longer that others so it will need more spase into the spase of Technology",

@@ -12,7 +12,7 @@ class TopicListSerializer(serializers.ListSerializer):
 
     class Meta:
         model = models.Topic
-        fields = ["user", "title", "created", "entry_count"]
+        fields = ["id", "user", "title", "created", "entry_count"]
 
 
 class TopicSerializer(serializers.ModelSerializer):
@@ -21,7 +21,7 @@ class TopicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Topic
-        fields = ["user", "title", "created", "entry_count"]
+        fields = ["id", "user", "title", "created", "entry_count"]
         list_serializer_class = TopicListSerializer
 
     def get_entry_count(self, obj):
@@ -36,10 +36,26 @@ class TopicSerializer(serializers.ModelSerializer):
 
 class EntrySerializer(serializers.ModelSerializer):
     user = UserSerializer()
+    favorite_count = serializers.SerializerMethodField()
+    title = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Entry
-        fields = ["user", "topic", "text", "created"]
+        fields = ["user", "topic", "text", "created", "favorite_count", "title"]
+
+    def get_favorite_count(self, obj):
+        try:
+            if obj.favorite_count != 0:
+                return obj.entry_count
+            else:
+                return 0
+        except:
+            return ""
+
+    def get_title(self, obj):
+
+        return self.context.get("title")
+
 
 
 class FavoriteSerializer(serializers.ModelSerializer):

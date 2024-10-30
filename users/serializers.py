@@ -6,11 +6,11 @@ from sorl.thumbnail import get_thumbnail
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["profile_name", "email", "small_thumbnail"]
+        fields = ["profile_name", "email", "thumbnail"]
 
-    small_thumbnail = serializers.SerializerMethodField()
+    thumbnail = serializers.SerializerMethodField()
 
-    def get_small_thumbnail(self, obj):
+    def get_thumbnail(self, obj):
 
         return obj.thumbnail.url.replace(
             "/static/", ""

@@ -6,104 +6,101 @@
     <title>exorcist</title>
     <style>
         /* Importing Google Font */
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap'); /* Added bold weight */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #ffffff; } /* Changed background to white */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #ffffff; }
 
         /* Header Styling */
         header {
-            background-color: #fff; /* Changed to white */
+            background-color: #fff;
             color: #333;
             padding: 10px;
-            text-align: left; /* Align text to the left */
-            border-bottom: 1px solid #ddd; /* Keep the separator */
-            display: flex; /* Use flex for header layout */
-            flex-direction: column; /* Stack items vertically */
-            align-items: center; /* Center items horizontally */
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Header Height */
         .header-container {
             width: 100%;
             display: flex;
-            justify-content: space-between; /* Space between elements */
-            align-items: center; /* Center items vertically */
-            padding: 10px 0; /* Padding for top and bottom */
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
         }
 
-        /* Website Title Styling */
         .website-title {
-            font-family: 'Montserrat', sans-serif; /* Non-connected font */
-            font-size: 1.5em; /* Smaller font size */
-            margin: 0; /* Remove default margin */
-            letter-spacing: 0.5px; /* Uniform letter spacing */
-            display: flex; /* Use flex for alignment */
-            align-items: center; /* Center the logo and text vertically */
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5em;
+            margin: 0;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
         }
 
-        /* Logo Styling */
         .logo {
-            width: 30px; /* Adjust size of the logo */
+            width: 30px;
             height: 30px;
-            margin-right: 10px; /* Space between logo and text */
+            margin-right: 10px;
         }
 
         /* Search Bar Styling */
         .search-container {
-            display: flex; /* Flexbox layout for input and button */
-            align-items: center; /* Center items vertically */
+            display: flex;
+            align-items: center;
         }
         .search-input {
-            width: 180px; /* Adjust width for the input field to be wider */
-            padding: 5px; /* Padding for the input */
-            border: 1px solid #ccc; /* Border styling */
-            border-radius: 5px; /* Rounded corners */
-            font-size: 0.9em; /* Font size for the input */
-            margin: 0 5px; /* Horizontal spacing */
+            width: 180px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin: 0 5px;
         }
         .search-button {
-            background-color: transparent; /* Make button transparent */
-            border: 1px solid #333; /* Border color */
-            color: #333; /* Dark text color */
-            padding: 5px 10px; /* Padding for button */
-            border-radius: 5px; /* Rounded corners */
-            cursor: pointer; /* Pointer cursor */
-            font-size: 0.9em; /* Font size for the button */
+            background-color: transparent;
+            border: 1px solid #333;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
         }
         .search-button:hover {
-            background-color: rgba(211, 211, 211, 0.3); /* Highlight on hover */
+            background-color: rgba(211, 211, 211, 0.3);
         }
 
         /* Tabs Styling */
         .tabs {
             display: flex;
-            width: 100%; /* Full width for the tabs */
-            margin-top: 10px; /* Space above the tabs */
-            margin-bottom: 10px; /* Space below the tabs */
-            justify-content: space-between; /* Space between tabs */
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            justify-content: space-between;
         }
         .tab {
-            flex: 1; /* Evenly distribute space among tabs */
-            padding: 10px 0; /* Vertical padding */
+            flex: 1;
+            padding: 10px 0;
             cursor: pointer;
             text-align: center;
             color: #333;
-            font-size: 0.9em; /* Smaller font size */
-            font-family: 'Quicksand', sans-serif; /* Same font style as sidebar */
-            font-weight: bold; /* Bolder text */
+            font-size: 0.9em;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: bold;
             transition: background-color 0.3s;
         }
         .tab:hover {
-            background-color: #f0f0f0; /* Highlight on hover */
+            background-color: #f0f0f0;
         }
         .active {
-            border-bottom: 2px solid #333; /* Indicate active tab */
-            font-weight: bold; /* Make active tab text bold */
+            border-bottom: 2px solid #333;
+            font-weight: bold;
         }
 
         .container { display: flex; padding: 20px; }
 
-        /* Sidebar Styling (unchanged) */
+        /* Sidebar Styling */
         .sidebar {
             width: 20%;
             background-color: #f8f8f8;
@@ -118,39 +115,16 @@
             color: #a0a0a0;
             font-family: 'Quicksand', sans-serif;
         }
-        /* Refresh Button Styling (unchanged) */
-        .refresh-button {
-            background-color: transparent; /* Transparent background */
-            color: #333;
-            border: 1px solid #d3d3d3; /* Light border for better visibility */
-            padding: 5px 10px;
-            font-size: 0.9em;
-            cursor: pointer;
-            font-family: 'Quicksand', sans-serif;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            width: calc(100% - 20px); /* Slightly less than sidebar width */
-            text-align: center; /* Center the text */
-        }
-        .refresh-button:hover {
-            background-color: rgba(211, 211, 211, 0.3); /* Slightly darker on hover */
-        }
         .sidebar ul { list-style-type: none; padding: 0; }
         .sidebar li {
             display: flex;
             justify-content: space-between;
             margin-bottom: 15px;
-            color: #333;
             font-size: 0.9em;
             font-family: 'Quicksand', sans-serif;
-            font-weight: 400; /* Lighter font weight */
-            letter-spacing: 0.5px;
+            font-weight: 400;
             padding: 8px 0;
-        }
-        .sidebar a {
-            color: #333;
-            text-decoration: none;
-            font-weight: 400; /* Lighter font weight */
+            cursor: pointer;
         }
 
         /* Content Styling */
@@ -159,84 +133,69 @@
             background-color: #fff;
             margin-bottom: 20px;
             padding: 20px;
-            /* Removed border styling */
             display: flex;
-            flex-direction: column; /* Stack content vertically */
+            flex-direction: column;
         }
-        .entry-title { font-size: 1.2em; font-weight: bold; color: #333; margin-bottom: 5px; }
-        .entry-content { font-size: 1em; color: #555; }
+        .entry-text { font-size: 1em; color: #555; }
 
         /* Voting and Save Buttons Styling */
         .voting-buttons {
-            display: flex; /* Flexbox layout for buttons */
-            gap: 5px; /* Space between buttons */
-            margin-top: 10px; /* Space above the buttons */
-            align-items: center; /* Align items center vertically */
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+            align-items: center;
         }
         .vote-button {
-            background-color: transparent; /* Transparent background */
-            border: none; /* No border */
-            cursor: pointer; /* Pointer cursor */
-            font-size: 0.8em; /* Smaller font size */
-            color: #333; /* Color for the buttons */
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8em;
+            color: #333;
         }
         .save-button {
-            color: green; /* Green color for the heart */
-            font-size: 0.8em; /* Same size as other buttons */
-            background-color: transparent; /* Transparent background */
-            border: none; /* No border */
-            cursor: pointer; /* Pointer cursor */
+            color: green;
+            font-size: 0.8em;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
         }
         .save-count {
-            font-size: 0.8em; /* Font size for the count */
-            color: #333; /* Same color as buttons */
-            margin-left: 5px; /* Space between button and count */
+            font-size: 0.8em;
+            color: #333;
+            margin-left: 5px;
         }
 
         /* Author Thumbnail Styling */
         .author-thumbnail {
-            width: 30px; /* Increased width of the thumbnail */
-            height: 30px; /* Increased height of the thumbnail */
-            border-radius: 50%; /* Make it circular */
-            margin-left: 10px; /* Space between the buttons and thumbnail */
-            vertical-align: middle; /* Align vertically with text */
-            float: right; /* Align to the right */
-        }
-
-        /* Sign Up Link */
-        .signup-link {
-            font-family: 'Quicksand', sans-serif; /* Same font as sidebar */
-            font-size: 0.9em; /* Size of the text */
-            color: #333; /* Color of the text */
-            text-decoration: none; /* No underline */
-            display: flex; /* Flex for icon alignment */
-            align-items: center; /* Center icon and text */
-        }
-        .signup-icon {
-            margin-right: 5px; /* Space between icon and text */
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-left: 10px;
+            vertical-align: middle;
+            float: right;
         }
 
         /* User Name Styling */
         .user-name {
-            font-size: 0.7em; /* Smaller font size for the user name */
-            color: #666; /* Slightly lighter color */
-            margin-right: 5px; /* Space between name and thumbnail */
+            font-size: 0.7em;
+            color: #666;
+            margin-right: 5px;
         }
     </style>
 </head>
 <body>
 
-{% load static %} <!-- Load static files -->
+{% load static %}
 
 <header>
     <div class="header-container">
         <h1 class="website-title">
-            <img src="{% static 'core/images/exorcist_logo.png' %}" alt="Logo" class="logo"> <!-- Logo -->
+            <img src="{% static 'core/images/exorcist_logo.png' %}" alt="Logo" class="logo">
             exorcist
         </h1>
         <div class="search-container">
-            <input type="text" class="search-input" placeholder="Search..."> <!-- Search entry field -->
-            <button class="search-button">🔍</button> <!-- Search button with icon -->
+            <input type="text" class="search-input" placeholder="Search...">
+            <button class="search-button">🔍</button>
         </div>
         <a href="#" class="signup-link">
             <span class="signup-icon">👤</span> Sign Up
@@ -253,37 +212,84 @@
 
 <div class="container">
     <div class="sidebar">
-        <h3>Today</h3>
-        <button class="refresh-button">Refresh &#8635;</button> <!-- Refresh icon -->
-        <ul>
+        <h3>Topics</h3>
+        <ul id="topic-list">
             {% for topic in top_topics %}
-                <li>
-                    <a href="{{ topic.url }}">{{ topic.title }}</a>
+                <li id="{{ topic.id }}" class="topic-item">
+                    <span>{{ topic.title }}</span>
                     <span>{{ topic.entry_count }}</span>
                 </li>
             {% endfor %}
         </ul>
     </div>
 
-    <div class="content">
-        {% for entry in entries %}
-            <div class="entry">
-                <div class="entry-title">{{ entry.title }}</div>
-                <div class="entry-content">{{ entry.content }}</div>
-                <div class="voting-buttons">
-                    <button class="vote-button">⬆️</button> <!-- Upvote button -->
-                    <button class="vote-button">⬇️</button> <!-- Downvote button -->
-                    <button class="save-button">❤️</button> <!-- Green heart button -->
-                    <span class="save-count">{{ entry.save_count }}</span> <!-- Save count next to the button -->
+    <div class="content" id="content-area">
+        <h2 class="topic-title" id="topic-title"></h2>
+        <div id="entries-container">
+            {% for entry in all_best_entries %}
+                <div class="entry">
+                    <h3>{{ entry.title }}</h3>
+                    <div class="entry-text">{{ entry.text }}</div>
+                    <div class="voting-buttons">
+                        <button class="vote-button">⬆️</button>
+                        <button class="vote-button">⬇️</button>
+                        <button class="save-button">❤️</button>
+                        <span class="save-count">{{ entry.favorite_count }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 10px;">
+                        <span class="user-name">{{ entry.user.profile_name }}</span>
+                        <img src="{% static entry.user.thumbnail %}" class="author-thumbnail">
+                    </div>
                 </div>
-                <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 10px;">
-                    <span class="user-name">{{ entry.user }}</span> <!-- User name above thumbnail -->
-                    <img src="{% static entry.thumbnail %}" class="author-thumbnail"> <!-- User thumbnail using static path -->
-                </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const topicItems = document.querySelectorAll('.topic-item');
+        const entriesContainer = document.getElementById('entries-container');
+        const topicTitle = document.getElementById('topic-title');
+
+        topicItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const selectedId = this.id;
+
+                // Clear previous entries
+                entriesContainer.innerHTML = '';
+                topicTitle.innerText = this.querySelector('span').innerText;
+
+                {% for entry in entries %}
+                    if ({{ entry.topic }} == selectedId) {
+                        // Create entry element
+                        const entryDiv = document.createElement('div');
+                        entryDiv.className = 'entry topic-' + selectedId;
+
+                        entryDiv.innerHTML = `
+                            <div class="entry-text">{{ entry.text }}</div>
+                            <div class="voting-buttons">
+                                <button class="vote-button">⬆️</button>
+                                <button class="vote-button">⬇️</button>
+                                <button class="save-button">❤️</button>
+                                <span class="save-count">{{ entry.save_count }}</span>
+                            </div>
+                            <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 10px;">
+                                <span class="user-name">{{ entry.user.profile_name }}</span>
+                                <img src="{% static entry.user.thumbnail %}" class="author-thumbnail">
+                            </div>
+                        `;
+                        entriesContainer.appendChild(entryDiv);
+                    }
+                {% endfor %}
+
+                // Highlight the selected topic
+                topicItems.forEach(it => it.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    });
+</script>
 
 </body>
 </html>

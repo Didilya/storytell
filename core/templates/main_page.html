@@ -225,24 +225,24 @@
 
     <div class="content" id="content-area">
         <h2 class="topic-title" id="topic-title"></h2>
-        <div id="entries-container">
-            {% for entry in all_best_entries %}
-                <div class="entry">
-                    <h3>{{ entry.title }}</h3>
-                    <div class="entry-text">{{ entry.text }}</div>
-                    <div class="voting-buttons">
-                        <button class="vote-button">⬆️</button>
-                        <button class="vote-button">⬇️</button>
-                        <button class="save-button">❤️</button>
-                        <span class="save-count">{{ entry.favorite_count }}</span>
+            <div id="entries-container">
+                {% for entry in all_best_entries %}
+                    <div class="entry">
+                        <h3>{{ entry.title }}</h3>
+                        <div class="entry-text">{{ entry.text }}</div>
+                        <div class="voting-buttons">
+                            <button class="vote-button">⬆️</button>
+                            <button class="vote-button">⬇️</button>
+                            <button class="save-button">❤️</button>
+                            <span class="save-count">{{ entry.favorite_count }}</span>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 10px;">
+                            <span class="user-name">{{ entry.user.profile_name }}</span>
+                            <img src="{% static entry.user.thumbnail %}" class="author-thumbnail">
+                        </div>
                     </div>
-                    <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 10px;">
-                        <span class="user-name">{{ entry.user.profile_name }}</span>
-                        <img src="{% static entry.user.thumbnail %}" class="author-thumbnail">
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
     </div>
 </div>
 
@@ -262,7 +262,6 @@
 
                 {% for entry in entries %}
                     if ({{ entry.topic }} == selectedId) {
-                        // Create entry element
                         const entryDiv = document.createElement('div');
                         entryDiv.className = 'entry topic-' + selectedId;
 
@@ -272,7 +271,7 @@
                                 <button class="vote-button">⬆️</button>
                                 <button class="vote-button">⬇️</button>
                                 <button class="save-button">❤️</button>
-                                <span class="save-count">{{ entry.save_count }}</span>
+                                <span class="save-count">{{ entry.favorite_count }}</span>
                             </div>
                             <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 10px;">
                                 <span class="user-name">{{ entry.user.profile_name }}</span>

@@ -57,7 +57,6 @@ class EntrySerializer(serializers.ModelSerializer):
         return self.context.get("title")
 
 
-
 class FavoriteSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 

@@ -38,6 +38,7 @@ class EntrySerializer(serializers.ModelSerializer):
     user = UserSerializer()
     favorite_count = serializers.SerializerMethodField()
     title = serializers.SerializerMethodField()
+    created = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Entry
@@ -55,6 +56,9 @@ class EntrySerializer(serializers.ModelSerializer):
     def get_title(self, obj):
 
         return self.context.get("title")
+
+    def get_created(self, obj):
+        return obj.created.strftime("%d.%m.%Y %H:%M")
 
 
 class FavoriteSerializer(serializers.ModelSerializer):

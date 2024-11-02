@@ -5,7 +5,7 @@ from core.utils.queries import (
     get_topics_entries,
     get_trending_topics,
     get_all_entries,
-    get_topics_most_fav_topic,
+    get_topics_most_fav_entry,
 )
 from core.serializers import TopicSerializer, EntrySerializer
 
@@ -54,7 +54,7 @@ class MainPageView(TemplateResponseMixin, View):
         context = {
             "entries": entries_data,
             "top_topics": top_topics_data,
-            "all_best_entries": get_topics_most_fav_topic(top_topics_ids),
+            "all_best_entries": get_topics_most_fav_entry(top_topics_ids),
         }
         logger.debug(f"ALL CONTEXT {context}")
         return self.render_to_response(context)

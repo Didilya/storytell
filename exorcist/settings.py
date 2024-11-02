@@ -185,3 +185,7 @@ else:
         filename="log_file.log",
         filemode="a",
     )
+
+LOGIN_REDIRECT_URL = "/"  # Redirects users here after login
+LOGOUT_REDIRECT_URL = "/login/"  # Redirects users here after logout
+LOGIN_URL = "/login/"  # URL for the login page if accessing a protected view

@@ -25,21 +25,20 @@ def get_all_entries():
     )
 
 
-def get_topics_most_fav_topic(topic_ids):
+def get_topics_most_fav_entry(topic_ids):
     topics_fav_entry_list = []
-    for id in topic_ids:
-        topic = Topic.objects.get(id=id)
+    for topic_id in topic_ids:
+        topic = Topic.objects.get(id=topic_id)
         queryset = (
             Entry.objects.filter(topic=topic)
             .all()
             .annotate(favorite_count=Count("favorites"))
             .order_by("-favorite_count")
         )
-        data = EntrySerializer(queryset, many=True, context={"title": topic.title}).data
-        if data != []:
-            best_entry = data[0]
-        else:
+        if not queryset:
             continue
+        data = EntrySerializer(queryset, many=True, context={"title": topic.title}).data
+        best_entry = data[0]
         logger.debug(f"FAV ENTRIES={data}")
         topics_fav_entry_list.append(best_entry)
     logger.debug(f"ALL FAV ENTRIES={topics_fav_entry_list}")

@@ -6,7 +6,7 @@ from sorl.thumbnail import get_thumbnail
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["profile_name", "email", "thumbnail"]
+        fields = ["profile_name", "thumbnail"]
 
     thumbnail = serializers.SerializerMethodField()
 

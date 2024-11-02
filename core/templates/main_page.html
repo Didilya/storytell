@@ -188,6 +188,21 @@
             left: 0; /* Align it to the left */
             z-index: 1000; /* Make sure it stays on top */
         }
+        .text-button {
+            background: none; /* Remove background */
+            border: none; /* Remove border */
+            color: #333; /* Set the text color */
+            font-size: 1em; /* Set font size */
+            font-family: inherit; /* Use the same font as surrounding text */
+            cursor: pointer; /* Show pointer cursor on hover */
+            padding: 0; /* Remove padding */
+            text-decoration: none; /* Remove underline if applicable */
+        }
+
+        .text-button:hover {
+            text-decoration: underline; /* Optional: underline on hover for better UX */
+            color: #555; /* Optional: darker text color on hover */
+        }
 
     </style>
 </head>
@@ -205,9 +220,24 @@
             <input type="text" class="search-input" placeholder="Search...">
             <button class="search-button">🔍</button>
         </div>
-        <a href="/login" class="signup-link">
-            <span class="signup-icon">👤</span> Sign Up
-        </a>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+        {% if user.is_authenticated %}
+            <div class="user-info" style="display: flex; align-items: center;">
+                <span class="user-name" style="margin-left: 5px;">{{ user.profile_name }}</span>
+                <img src="{% static user_data.thumbnail %}" class="author-thumbnail">
+                <img src="{% static 'core/images/logout.png' %}" alt="Logout" style="width: 20px; height: 20px; margin-right: 5px;">
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="text-button">Logout</button>
+                </form>
+            </div>
+
+        {% else %}
+            <a href="/login" class="signup-link">
+                <span class="signup-icon">👤</span> Sign Up
+            </a>
+        {% endif %}
+        </div>
     </div>
     <div class="tabs">
         <div class="tab active">Today</div>

@@ -46,7 +46,7 @@ class EntrySerializer(serializers.ModelSerializer):
     def get_favorite_count(self, obj):
         try:
             if obj.favorite_count != 0:
-                return obj.entry_count
+                return obj.favorite_count
             else:
                 return 0
         except:

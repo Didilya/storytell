@@ -11,7 +11,9 @@ class UserSerializer(serializers.ModelSerializer):
     thumbnail = serializers.SerializerMethodField()
 
     def get_thumbnail(self, obj):
-
-        return obj.thumbnail.url.replace(
-            "/static/", ""
-        )  # get_thumbnail(obj.thumbnail, '200x200', crop='center', quality=99).url
+        try:
+            return obj.thumbnail.url.replace(
+                "/static/", ""
+            )  # get_thumbnail(obj.thumbnail, '200x200', crop='center', quality=99).url
+        except ValueError:
+            return "users/users_thumbnails/default.png"

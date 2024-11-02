@@ -195,13 +195,17 @@
             font-size: 1em; /* Set font size */
             font-family: inherit; /* Use the same font as surrounding text */
             cursor: pointer; /* Show pointer cursor on hover */
-            padding: 0; /* Remove padding */
+            padding: 1px; /* Remove padding */
             text-decoration: none; /* Remove underline if applicable */
         }
-
         .text-button:hover {
             text-decoration: underline; /* Optional: underline on hover for better UX */
             color: #555; /* Optional: darker text color on hover */
+        }
+        .join-icon {
+            background-color: #f4c300; /* Use your desired sandy color */
+            padding: 2px; /* Optional: add some padding for better appearance */
+            border-radius: 4px; /* Optional: round the corners */
         }
 
     </style>
@@ -233,8 +237,11 @@
             </div>
 
         {% else %}
-            <a href="/login" class="signup-link">
-                <span class="signup-icon">👤</span> Sign Up
+            <a href="/login" class="text-button">
+                <span class="signup-icon">👤</span> Sign In
+            </a>
+            <a href="/signup" class="text-button">
+                <span class="join-icon">👤</span> Join
             </a>
         {% endif %}
         </div>

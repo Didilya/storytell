@@ -207,6 +207,50 @@
             padding: 2px; /* Optional: add some padding for better appearance */
             border-radius: 4px; /* Optional: round the corners */
         }
+        .start-topic-button {
+            background-color: #f8f8f8; /* Match sidebar background */
+            border: 2px solid #d2b48c; /* Thicker sandy color border */
+            border-radius: 4px; /* Sharper corners */
+            color: #333; /* Text color */
+            font-size: 0.9em; /* Font size */
+            padding: 10px 12px; /* Padding for better height */
+            cursor: pointer;
+            width: calc(100% - 20px); /* Stretch button to full width minus padding */
+            margin-bottom: 15px; /* Space below the button */
+            text-decoration: none; /* Remove underline from text */
+            box-sizing: border-box; /* Include padding in width */
+            text-align: center; /* Center text */
+        }
+        .start-topic-button:hover {
+            background-color: #eaeaea;         /* Light gray hover effect */
+        }
+        .today-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .refresh-button {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            color: #333;
+            font-size: 1.2em;  /* Increase the icon size */
+            cursor: pointer;
+            padding: 5px;      /* Adjust padding for larger size */
+            margin-left: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+        }
+
+        .refresh-button:hover {
+            background-color: #f0f0f0;  /* Light gray hover effect */
+            color: #666;
+        }
 
     </style>
 </head>
@@ -257,7 +301,11 @@
 
 <div class="container">
     <div class="sidebar">
-        <h3>Topics</h3>
+        <div class="today-section">
+            <h3>Today's</h3>
+        <button class="refresh-button" onclick="location.reload();">↻</button>
+        </div>
+        <a href="exorcise" class="start-topic-button">start new topic</a>
         <ul id="topic-list">
             {% for topic in top_topics %}
                 <li id="{{ topic.id }}" class="topic-item">

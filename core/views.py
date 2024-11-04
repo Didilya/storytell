@@ -35,14 +35,13 @@ class MainPageView(TemplateResponseMixin, View):
         return self.render_to_response(context)
 
 
-
 class AddTopicView(TemplateResponseMixin, View):
-    template_name = 'add_topic.html'
+    template_name = "add_topic.html"
 
     def get(self, request, *args, **kwargs):
         context = {
-            'topic_form': TopicCreationForm(),
-            'entry_form': EntryCreationForm(),
+            "topic_form": TopicCreationForm(),
+            "entry_form": EntryCreationForm(),
         }
         return self.render_to_response(context)
 
@@ -56,11 +55,10 @@ class AddTopicView(TemplateResponseMixin, View):
             entry.topic = topic
             entry.save()
 
-            return redirect('success_url')
+            return redirect("success_url")
 
         context = {
-            'topic_form': topic_form,
-            'entry_form': entry_form,
+            "topic_form": topic_form,
+            "entry_form": entry_form,
         }
         return self.render_to_response(context)
-

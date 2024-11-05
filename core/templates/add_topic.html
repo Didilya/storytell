@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>exorcist - Add topic</title>
+    <title>exorcist - Combined Form</title>
     <style>
         /* Importing Google Font */
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
@@ -58,7 +58,8 @@
             background-color: #f7e07d; /* Sandy color */
             border-radius: 8px;
             padding: 20px 30px;
-            width: 320px;
+            width: 110%;           /* Increased width by 20% */
+            max-width: 700px;       /* Limit maximum width */
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
@@ -69,12 +70,16 @@
             color: #333;
         }
 
+        /* Styling for the section headers */
+        .form-container h3 {
+            font-size: 0.9em;      /* Smaller font size */
+            color: #666;           /* Gray color */
+            margin: 20px 0 10px;   /* Increased margins */
+        }
+
         /* Form labels and input fields */
         form label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #666;
+            display: none; /* Hide form field labels */
         }
 
         form input {
@@ -108,6 +113,38 @@
             box-shadow: 0 2px #333;
             transform: translateY(2px);
         }
+
+        /* Styling for messages */
+        .messages {
+            list-style: none;
+            margin-bottom: 15px;
+            padding: 0;
+        }
+
+        .messages li {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .messages .success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .messages .error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .messages .info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
     </style>
 </head>
 <body>
@@ -119,14 +156,24 @@
     </header>
     <main>
         <div class="form-container">
-            <h2>Add your thought</h2>
+            <h2>Submit Topic and Entry</h2>
+
+            <!-- Message display section -->
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
             <form method="post">
                 {% csrf_token %}
 
                 <h3>Topic</h3>
                 {{ topic_form.as_p }}
 
-                <h3>Entry</h3>
+                <h3>First entry of topic</h3>
                 {{ entry_form.as_p }}
 
                 <button type="submit" class="submit-button">Submit</button>

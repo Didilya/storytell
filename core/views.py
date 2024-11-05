@@ -1,4 +1,5 @@
 import logging
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic.base import View, TemplateResponseMixin
 from core.utils.queries import (
@@ -9,6 +10,8 @@ from core.utils.queries import (
 from core.serializers import TopicSerializer, EntrySerializer
 from users.serializers import UserSerializer
 from core.forms import TopicCreationForm, EntryCreationForm
+from django.db.models import F
+from django.http import HttpResponse, HttpResponseRedirect
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +40,10 @@ class MainPageView(TemplateResponseMixin, View):
 
 class AddTopicView(TemplateResponseMixin, View):
     template_name = "add_topic.html"
+    context = {
+        "topic_form": TopicCreationForm(),
+        "entry_form": EntryCreationForm(),
+    }
 
     def get(self, request, *args, **kwargs):
         context = {
@@ -49,13 +56,24 @@ class AddTopicView(TemplateResponseMixin, View):
         topic_form = TopicCreationForm(request.POST)
         entry_form = EntryCreationForm(request.POST)
 
+        if not request.user.is_authenticated:
+            messages.add_message(
+                request, messages.INFO, "You should Sign In to post topics and entries!"
+            )
+            return self.render_to_response(self.context)
+
         if topic_form.is_valid() and entry_form.is_valid():
-            topic = topic_form.save()
+            topic = topic_form.save(commit=False)
+            topic.user = request.user
+            topic.save()
             entry = entry_form.save(commit=False)
             entry.topic = topic
+            entry.user = request.user
             entry.save()
 
-            return redirect("success_url")
+            return redirect("/")
+        else:
+            self.render_to_response(self.context)
 
         context = {
             "topic_form": topic_form,

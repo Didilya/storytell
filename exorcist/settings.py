@@ -83,7 +83,7 @@ WSGI_APPLICATION = "exorcist.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db(),
+    "default": env.db("DATABASE_URL"),
 }
 
 
@@ -125,7 +125,9 @@ STATIC_URL = "static/"
 
 # Directory where static files are collected
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static/"),  # Change 'your_app_name' to your actual app name
+    os.path.join(
+        BASE_DIR, "../static/"
+    ),  # Change 'your_app_name' to your actual app name
 ]
 
 # For production: Directory where static files are collected by collectstatic

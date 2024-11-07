@@ -8,6 +8,24 @@ class TopicCreationForm(forms.ModelForm):
         model = Topic
         fields = ["title"]
 
+    def clean(self):
+        super(TopicCreationForm, self).clean()
+        title = self.cleaned_data.get("title")
+        if len(title) < core_settings.MIN_TOPIC_CHARACTERS:
+            self._errors["title"] = self.error_class(
+                [
+                    f"Should Contain a minimum of {core_settings.MIN_TOPIC_CHARACTERS} characters"
+                ]
+            )
+        if len(title) > core_settings.MAX_TOPIC_CHARACTERS:
+            self._errors["title"] = self.error_class(
+                [
+                    f"Try to fit your idea in less that {core_settings.MAX_TOPIC_CHARACTERS} characters"
+                ]
+            )
+
+        return self.cleaned_data
+
 
 class EntryCreationForm(forms.ModelForm):
     class Meta:
@@ -19,7 +37,7 @@ class EntryCreationForm(forms.ModelForm):
         text = self.cleaned_data.get("text")
         if len(text) < core_settings.MIN_ENTRY_CHARACTERS:
             self._errors["text"] = self.error_class(
-                ["Entry Should Contain a minimum of 1 characters"]
+                ["Should Contain a minimum of 1 characters"]
             )
         if len(text) > core_settings.MAX_ENTRY_CHARACTERS:
             self._errors["text"] = self.error_class(

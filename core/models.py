@@ -1,8 +1,10 @@
 from django.db import models
 from model_utils.models import TimeStampedModel
+from core.utils.field import UidField
 
 
 class Topic(TimeStampedModel):
+    uid = UidField()
     user = models.ForeignKey(
         "users.User",
         on_delete=models.PROTECT,
@@ -15,6 +17,7 @@ class Topic(TimeStampedModel):
 
 
 class Entry(TimeStampedModel):
+    uid = UidField()
     user = models.ForeignKey(
         "users.User",
         on_delete=models.PROTECT,

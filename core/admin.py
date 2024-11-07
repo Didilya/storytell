@@ -3,8 +3,8 @@ from core import models
 
 
 @admin.register(models.Entry)
-class EnrtyAdmin(admin.ModelAdmin):
-    list_display = ["id", "user", "text", "created", "modified"]
+class EntryAdmin(admin.ModelAdmin):
+    list_display = ["id", "uid", "user", "text", "created", "modified"]
     search_fields = ["user__email"]
     empty_value_display = "-"
     exclude = ["created", "modified"]
@@ -12,7 +12,7 @@ class EnrtyAdmin(admin.ModelAdmin):
 
 @admin.register(models.Topic)
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ["id", "title", "created", "modified"]
+    list_display = ["id", "uid", "title", "created", "modified"]
     search_fields = ["user__email"]
     empty_value_display = "-"
     exclude = ["created", "modified"]

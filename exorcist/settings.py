@@ -126,7 +126,7 @@ STATIC_URL = "static/"
 # Directory where static files are collected
 STATICFILES_DIRS = [
     os.path.join(
-        BASE_DIR, "../static/"
+        BASE_DIR, "./static/"
     ),  # Change 'your_app_name' to your actual app name
 ]
 

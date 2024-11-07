@@ -326,7 +326,7 @@
                             <div class="voting-buttons">
                                 <button class="vote-button">⬆️</button>
                                 <button class="vote-button">⬇️</button>
-                                <button class="save-button">❤️</button>
+                                <button class="save-button" onclick="addToFavorite()">❤️</button>
                                 <span class="save-count">{{ entry.favorite_count }}</span>
                             </div>
                             <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 10px;">
@@ -367,7 +367,7 @@
                             <div class="voting-buttons">
                                 <button class="vote-button">⬆️</button>
                                 <button class="vote-button">⬇️</button>
-                                <button class="save-button">❤️</button>
+                                <button class="save-button onclick="addToFavorite()">❤️</button>
                                 <span class="save-count">{{ entry.favorite_count }}</span>
                             </div>
                             <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 10px;">
@@ -388,6 +388,24 @@
             });
         });
     });
+
+    function addToFavorite(entry) {
+    // Send a POST request to the endpoint
+    fetch("/add_favorite", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({ entry: entry }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Display the response data
+        document.getElementById("response").textContent = data.message;
+    })
+    .catch(error => console.error('Error:', error));
+}
 </script>
 
 

@@ -10,8 +10,6 @@ from core.utils.queries import (
 from core.serializers import TopicSerializer, EntrySerializer
 from users.serializers import UserSerializer
 from core.forms import TopicCreationForm, EntryCreationForm
-from django.db.models import F
-from django.http import HttpResponse, HttpResponseRedirect
 
 logger = logging.getLogger(__name__)
 
@@ -80,3 +78,12 @@ class AddTopicView(TemplateResponseMixin, View):
             "entry_form": entry_form,
         }
         return self.render_to_response(context)
+
+
+class AddFavorite(View):
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.add_message(
+                request, messages.INFO, "You should Sign In to add to favorites"
+            )
+            return redirect("/")

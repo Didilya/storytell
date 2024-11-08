@@ -1,4 +1,5 @@
 import logging
+import json
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic.base import View, TemplateResponseMixin
@@ -6,6 +7,8 @@ from core.utils.queries import (
     get_trending_topics,
     get_all_entries,
     get_topics_most_fav_entry,
+    get_entry_by_uid,
+    get_or_create_to_favorite,
 )
 from core.serializers import TopicSerializer, EntrySerializer
 from users.serializers import UserSerializer
@@ -86,4 +89,16 @@ class AddFavorite(View):
             messages.add_message(
                 request, messages.INFO, "You should Sign In to add to favorites"
             )
-            return redirect("/")
+        data = json.loads(request.body)
+        entry_uid = data.get("entry")
+        logger.debug(f"FAVORITE DATA {data}")
+        entry = get_entry_by_uid(entry_uid)
+        logger.debug(f"FAVORITE ENTRY {entry}")
+        add_to_fav = get_or_create_to_favorite(request.user, entry)
+        logger.debug(f"FAVORITE CREATED? {add_to_fav}")
+        if not add_to_fav:
+            messages.add_message(
+                request, messages.INFO, "You already added this entry to favorites"
+            )
+
+        return redirect("/")

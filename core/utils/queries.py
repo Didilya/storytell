@@ -17,7 +17,7 @@ def get_trending_topics():
     topics = Topic.objects.annotate(entry_count=Count("entries")).order_by(
         "-entry_count"
     )
-    logger.debug(f"TOPICS={topics} and {[e.entry_count for e in topics]}")
+    # logger.debug(f"TOPICS={topics} and {[e.entry_count for e in topics]}")
     return topics
 
 
@@ -41,9 +41,8 @@ def get_topics_most_fav_entry(topic_ids):
             continue
         data = EntrySerializer(queryset, many=True, context={"title": topic.title}).data
         best_entry = data[0]
-        logger.debug(f"FAV ENTRIES={data}")
         topics_fav_entry_list.append(best_entry)
-    logger.debug(f"ALL FAV ENTRIES={topics_fav_entry_list}")
+    # logger.debug(f"ALL FAV ENTRIES={topics_fav_entry_list}")
     return topics_fav_entry_list
 
 

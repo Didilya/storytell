@@ -13,6 +13,8 @@ from core.utils.queries import (
 from core.serializers import TopicSerializer, EntrySerializer
 from users.serializers import UserSerializer
 from core.forms import TopicCreationForm, EntryCreationForm
+from django.http import JsonResponse
+from django.core import exceptions
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +28,7 @@ class MainPageView(TemplateResponseMixin, View):
         entries = get_all_entries()
         entries_data = EntrySerializer(entries, many=True).data
         top_topics_data = TopicSerializer(top_topics, many=True).data
-        logger.debug(f"entries_data={entries_data}, top_topics_data={top_topics_data}")
+        # logger.debug(f"entries_data={entries_data}, top_topics_data={top_topics_data}")
         context = {
             "user": request.user,
             "entries": entries_data,
@@ -35,7 +37,6 @@ class MainPageView(TemplateResponseMixin, View):
         }
         if request.user.is_authenticated:
             context["user_data"] = UserSerializer(request.user).data
-        logger.debug(f"ALL CONTEXT {context}")
         return self.render_to_response(context)
 
 
@@ -86,9 +87,10 @@ class AddTopicView(TemplateResponseMixin, View):
 class AddFavorite(View):
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            messages.add_message(
-                request, messages.INFO, "You should Sign In to add to favorites"
-            )
+            data = {"error": "You should Sign In to add to favorites"}
+            return JsonResponse(
+                data, status=403
+            )  # or raise exceptions.PermissionDenied
         data = json.loads(request.body)
         entry_uid = data.get("entry")
         logger.debug(f"FAVORITE DATA {data}")
@@ -97,8 +99,7 @@ class AddFavorite(View):
         add_to_fav = get_or_create_to_favorite(request.user, entry)
         logger.debug(f"FAVORITE CREATED? {add_to_fav}")
         if not add_to_fav:
-            messages.add_message(
-                request, messages.INFO, "You already added this entry to favorites"
-            )
+            data = {"error": "You already added this entry to favorites"}
+            return JsonResponse(data, status=404)
 
         return redirect("/")

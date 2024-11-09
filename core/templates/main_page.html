@@ -326,7 +326,7 @@
                             <div id="{{ entry.uid }}" class="voting-buttons">
                                 <button class="vote-button">⬆️</button>
                                 <button class="vote-button">⬇️</button>
-                                <button class="save-button" onclick="addToFavorite('{{ entry.uid}}')">❤️</button>
+                                <button class="save-button" onclick="addToFavorite('9dc52c0c-d7f0-420d-b6e0-55c27e4124dc')">❤️</button>
                                 <span class="save-count">{{ entry.favorite_count }}</span>
                             </div>
                             <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 10px;">
@@ -342,6 +342,10 @@
 
     </div>
 </div>
+
+
+
+{#Listener for rendering related to topic entries#}
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -367,8 +371,8 @@
                             <div id="{{ entry.uid }}" class="voting-buttons">
                                 <button class="vote-button">⬆️</button>
                                 <button class="vote-button">⬇️</button>
-                                <button class="save-button onclick="addToFavorite('{{ entry.uid}}')">❤️</button>
-                                <span class="save-count">{{ entry.favorite_count }}</span>
+                                <button class="save-button" onclick="addToFavorite('{{ entry.uid }}')">❤️</button>
+                            <span class="save-count">{{ entry.favorite_count }}</span>
                             </div>
                             <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 10px;">
                                 <div style="display: flex; flex-direction: column; align-items: flex-end;">
@@ -389,7 +393,13 @@
         });
     });
 
-        function addToFavorite(Uid) {
+
+</script>
+
+{#Function to add Favorites:#}
+
+<script>
+    function addToFavorite(Uid) {
 
             // Use postId in the request
             fetch("/add_favorite/", {
@@ -401,21 +411,83 @@
                 body: JSON.stringify({ entry: Uid })
             })
             .then(response => {
+                if (response.redirected) {
+                    // Follow the redirect URL provided by the response
+                    window.location.replace(response.url);
+                    return;
+                }
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    // If the response is not OK, try to parse the error message from JSON
+                    return response.json().then(data => {
+                        showPopup(data.error || "Unknown error occurred");
+                        throw new Error(data.error || "Unknown error occurred"); // Display specific error or fallback
+                    });
                 }
                 return response.json();
             })
-            .then(data => {
-                document.getElementById("response").textContent = data.message;
-            })
             .catch(error => {
-                showPopup("Something went wrong: " + error.message);
+                // Show the error message in a popup
+                showPopup(error.message);
             });
         }
 
 </script>
 
+{#Pop up script:#}
+
+<script>
+        function showPopup(message) {
+    let popup = document.getElementById("dynamic-popup");
+
+    // Create the popup element if it doesn't exist
+    if (!popup) {
+        popup = document.createElement("div");
+        popup.id = "dynamic-popup";
+        popup.style.position = "fixed";
+        popup.style.top = "50%";
+        popup.style.left = "50%";
+        popup.style.transform = "translate(-50%, -50%)";
+        popup.style.backgroundColor = "#f8d7da";
+        popup.style.color = "#721c24";
+        popup.style.padding = "20px";
+        popup.style.border = "1px solid #f5c6cb";
+        popup.style.borderRadius = "8px";
+        popup.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+        popup.style.zIndex = "1000";
+        popup.style.width = "300px";
+        popup.style.textAlign = "center";
+
+        // Create a message container
+        const messageContainer = document.createElement("p");
+        messageContainer.id = "popup-message";
+        popup.appendChild(messageContainer);
+
+        // Create a close button
+        const closeButton = document.createElement("button");
+        closeButton.innerText = "OK";
+        closeButton.style.marginTop = "10px";
+        closeButton.style.padding = "5px 10px";
+        closeButton.style.backgroundColor = "#721c24";
+        closeButton.style.color = "#fff";
+        closeButton.style.border = "none";
+        closeButton.style.borderRadius = "4px";
+        closeButton.style.cursor = "pointer";
+        closeButton.onclick = function() {
+            document.body.removeChild(popup);
+        };
+        popup.appendChild(closeButton);
+
+        // Append the popup to the body
+        document.body.appendChild(popup);
+    }
+
+    // Set the popup message text
+    document.getElementById("popup-message").textContent = message;
+
+    // Show the popup (in case it was hidden previously)
+    popup.style.display = "block";
+}
+</script>
 
 </body>
 </html>

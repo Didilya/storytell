@@ -44,10 +44,20 @@ class EntrySerializer(serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
     created = serializers.SerializerMethodField()
     uid = serializers.SerializerMethodField()
+    page = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Entry
-        fields = ["user", "uid", "topic", "text", "created", "favorite_count", "title"]
+        fields = [
+            "user",
+            "uid",
+            "topic",
+            "text",
+            "created",
+            "favorite_count",
+            "title",
+            "page",
+        ]
 
     def get_favorite_count(self, obj):
         try:
@@ -58,8 +68,10 @@ class EntrySerializer(serializers.ModelSerializer):
         except:
             return ""
 
-    def get_title(self, obj):
+    def get_page(self, obj):
+        return 10
 
+    def get_title(self, obj):
         return self.context.get("title")
 
     def get_created(self, obj):

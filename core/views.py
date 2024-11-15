@@ -9,12 +9,14 @@ from core.utils.queries import (
     get_topics_most_fav_entry,
     get_entry_by_uid,
     get_or_create_to_favorite,
+    get_topics_entries,
 )
 from core.serializers import TopicSerializer, EntrySerializer
 from users.serializers import UserSerializer
 from core.forms import TopicCreationForm, EntryCreationForm
 from django.http import JsonResponse
 from django.core import exceptions
+from django.core.paginator import Paginator
 
 logger = logging.getLogger(__name__)
 
@@ -103,3 +105,24 @@ class AddFavorite(View):
             return JsonResponse(data, status=404)
 
         return redirect("/")
+
+
+class TopicPageView(TemplateResponseMixin, View):
+    template_name = "topic_page.html"
+
+    def get(self, request, uid, *args, **kwargs):
+        entries = get_topics_entries(uid)
+        entries_data = EntrySerializer(entries, many=True).data
+        paginator = Paginator(entries_data, 25)
+        logger.debug(
+            f"entries_data={entries_data}, topic_uid={request.get('topic_uid')}. paginator={paginator}"
+        )
+        page_obj = paginator.get_page(request.get("page_number"))
+        logger.debug(f"page_obj={page_obj}, request {request.get('page_number')}")
+        top_topics = get_trending_topics()
+        top_topics_data = TopicSerializer(top_topics, many=True).data
+        context = {
+            "top_topics": top_topics_data,
+            "entries": entries_data,
+        }
+        return self.render_to_response(context)

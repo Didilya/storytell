@@ -8,8 +8,8 @@ import uuid
 logger = logging.getLogger(__name__)
 
 
-def get_topics_entries(topic_id):
-    topic = Topic.objects.get(id=topic_id)
+def get_topics_entries(topic_uid):
+    topic = Topic.objects.get(uid=topic_uid)
     return Entry.objects.filter(topic=topic).all()
 
 

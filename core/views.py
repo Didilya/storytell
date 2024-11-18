@@ -110,15 +110,15 @@ class AddFavorite(View):
 class TopicPageView(TemplateResponseMixin, View):
     template_name = "topic_page.html"
 
-    def get(self, request, uid, *args, **kwargs):
+    def get(self, request, uid, page_number, *args, **kwargs):
         entries = get_topics_entries(uid)
         entries_data = EntrySerializer(entries, many=True).data
         paginator = Paginator(entries_data, 25)
         logger.debug(
-            f"entries_data={entries_data}, topic_uid={request.get('topic_uid')}. paginator={paginator}"
+            f"entries_data={entries_data}, topic_uid={uid}. paginator={paginator}"
         )
-        page_obj = paginator.get_page(request.get("page_number"))
-        logger.debug(f"page_obj={page_obj}, request {request.get('page_number')}")
+        page_obj = paginator.get_page(page_number)
+        logger.debug(f"page_obj={page_obj}, page_number {page_number}")
         top_topics = get_trending_topics()
         top_topics_data = TopicSerializer(top_topics, many=True).data
         context = {

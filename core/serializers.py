@@ -19,10 +19,11 @@ class TopicSerializer(serializers.ModelSerializer):
     entry_count = serializers.SerializerMethodField()
     user = UserSerializer()
     uid = serializers.SerializerMethodField()
+    url = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Topic
-        fields = ["id", "uid", "user", "title", "created", "entry_count"]
+        fields = ["id", "uid", "user", "title", "created", "entry_count", "url"]
         list_serializer_class = TopicListSerializer
 
     def get_entry_count(self, obj):
@@ -36,6 +37,9 @@ class TopicSerializer(serializers.ModelSerializer):
 
     def get_uid(self, obj):
         return obj.uid.hex
+
+    def get_url(self, obj):
+        return f"topics/{obj.uid}/1"
 
 
 class EntrySerializer(serializers.ModelSerializer):

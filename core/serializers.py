@@ -26,7 +26,7 @@ class TopicSerializer(serializers.ModelSerializer):
         fields = ["id", "uid", "user", "title", "created", "entry_count", "url"]
         list_serializer_class = TopicListSerializer
 
-    def get_entry_ount(self, obj):
+    def get_entry_count(self, obj):
         try:
             if obj.entry_count != 0:
                 return obj.entry_count

@@ -122,6 +122,7 @@ class TopicPageView(TemplateResponseMixin, View):
         top_topics = get_trending_topics()
         top_topics_data = TopicSerializer(top_topics, many=True).data
         context = {
+            "user": request.user,
             "top_topics": top_topics_data,
             "entries": entries_data,
         }

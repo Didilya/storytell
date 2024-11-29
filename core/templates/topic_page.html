@@ -8,7 +8,14 @@
         /* Importing Google Font */
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #ffffff; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
         /* Header Styling */
         header {
@@ -96,17 +103,69 @@
             font-weight: bold;
         }
 
-        .container { display: flex; padding: 20px; }
 
         /* Sidebar Styling */
+        .container {
+            display: flex;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
         .sidebar {
             width: 20%;
             background-color: #f8f8f8;
             padding: 20px;
             box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
-            height: 90vh;
-            overflow-y: auto;
         }
+
+        .content {
+            width: 80%;
+            padding: 20px;
+            margin: 0 auto;
+        }
+        .entry {
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.entry-text {
+    font-size: 1em;
+    color: #555;
+}
+
+.entry .voting-buttons {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.entry .author-thumbnail {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.entry-created, .user-name {
+    text-align: right;
+    margin-top: 5px;
+}
+
+/* Ensures the user and date are aligned to the right */
+.entry .user-name, .entry .entry-created {
+    align-self: flex-end;
+    font-size: 0.7em;
+    color: #999;
+}
+
+
+
         .sidebar h3 {
             font-size: 1.4em;
             margin-bottom: 10px;
@@ -125,16 +184,6 @@
             cursor: pointer;
         }
 
-        /* Content Styling */
-        .content { width: 80%; padding: 20px; }
-        .entry {
-            background-color: #fff;
-            margin-bottom: 20px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-        .entry-text { font-size: 1em; color: #555; }
 
         /* Voting and Save Buttons Styling */
         .voting-buttons {
@@ -251,10 +300,32 @@
             background-color: #f0f0f0;  /* Light gray hover effect */
             color: #666;
         }
+
         .entries-container {
             position: relative;
-            padding-bottom: 40px; /* Ensure there's enough space for the pagination at the bottom */
+            flex: 1;  /* Allow this element to take up all remaining space */
+            padding-bottom: 40px;  /* Ensure there's enough space for pagination at the bottom */
+            margin-left: 20px;  /* Add left margin if needed */
         }
+        .pagination-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 5px;
+            position: relative; /* Remove absolute positioning and let it flow within the container */
+            margin-top: 10px; /* Add margin to provide spacing from entries */
+        }
+
+        .pagination-button {
+            font-size: 12px; /* Make buttons smaller */
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .pagination-dropdown {
+            font-size: 12px; /* Make dropdown smaller */
+            padding: 5px;
+        }
+
 
     </style>
 </head>
@@ -320,28 +391,33 @@
         </ul>
     </div>
 
-    <div id="entries-container">
-    {% for entry in entries %}
-        <div class="entry">
-            <h3>{{ entry.title }}</h3>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="entry-text" style="flex: 1;">{{ entry.text }}</div>
-                <div id="{{ entry.uid }}" class="voting-buttons" style="margin-left: 10px; display: flex; gap: 5px; align-items: center;">
-                    <button class="vote-button">⬆️</button>
-                    <button class="vote-button">⬇️</button>
-                    <button class="save-button" onclick="addToFavorite('{{ entry.uid }}')">❤️</button>
-                    <span class="save-count">{{ entry.favorite_count }}</span>
+    <div class="content" id="entries-container">
+        {% for entry in entries %}
+            <div class="entry" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; width: 100%;">
+
+                <!-- Left side: Entry title, text, and voting buttons (aligned to the left) -->
+                <div style="flex: 1; padding-right: 20px; text-align: left;">
+                    <h3>{{ entry.title }}</h3>
+                    <div class="entry-text" style="margin-bottom: 10px;">{{ entry.text }}</div>
+                    <div class="voting-buttons" style="display: flex; gap: 5px; align-items: center;">
+                        <button class="vote-button">⬆️</button>
+                        <button class="vote-button">⬇️</button>
+                        <button class="save-button" onclick="addToFavorite('{{ entry.uid }}')">❤️</button>
+                        <span class="save-count">{{ entry.favorite_count }}</span>
+                    </div>
                 </div>
-                <div style="display: flex; align-items: center; margin-left: auto;">
-                    <div style="display: flex; flex-direction: column; align-items: flex-end; margin-right: 10px;">
+
+                <!-- Right side: User info (profile_name, created, and thumbnail, aligned to the right) -->
+                <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 10px;">
+                    <div style="display: flex; flex-direction: column; align-items: flex-end;">
                         <span class="user-name">{{ entry.user.profile_name }}</span>
                         <span class="entry-created" style="font-size: 0.7em; color: #999; margin-top: 3px;">{{ entry.created }}</span>
                     </div>
                     <img src="{% static entry.user.thumbnail %}" class="author-thumbnail">
                 </div>
+
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
 
 <!-- Pagination Buttons -->
 <div class="pagination-container">
@@ -382,8 +458,8 @@
         <button class="pagination-button" onclick="loadPage(currentPage + 1)" id="next-page-button">➡️</button>
     {% endwith %}
     </div>
-    </div>
 
+</div>
 
 
 

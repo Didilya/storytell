@@ -12,6 +12,12 @@ def get_topics_entries(topic_uid):
     topic = Topic.objects.get(uid=topic_uid)
     return Entry.objects.filter(topic=topic).all()
 
+def get_best_entries(topic_uid):
+    topic = Topic.objects.get(uid=topic_uid)
+    return Entry.objects.annotate(favorite_count=Count("favorites")).order_by(
+        "-favorite_count"
+    )[:25]
+
 
 def get_trending_topics():
     topics = Topic.objects.annotate(entry_count=Count("entries")).order_by(

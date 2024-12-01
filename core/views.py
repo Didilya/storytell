@@ -10,6 +10,7 @@ from core.utils.queries import (
     get_entry_by_uid,
     get_or_create_to_favorite,
     get_topics_entries,
+    get_best_entries,
 )
 from core.serializers import TopicSerializer, EntrySerializer
 from users.serializers import UserSerializer
@@ -108,19 +109,25 @@ class AddFavorite(View):
 
 
 class TopicPageView(TemplateResponseMixin, View):
-    template_name = "topic_page.html"
+    template_name = "entries_page.html"
 
-    def get(self, request, uid, page_number, *args, **kwargs):
-        entries = get_topics_entries(uid)
-        entries_data = EntrySerializer(entries, many=True).data
-        paginator = Paginator(entries_data, 25)
-        logger.debug(
-            f"entries_data={entries_data}, topic_uid={uid}. paginator={paginator}"
-        )
-        page_obj = paginator.get_page(page_number)
-        logger.debug(f"page_obj={page_obj}, page_number {page_number}")
+    def get(self, request, uid, page_number=None, *args, **kwargs):
+        if page_number:
+            entries = get_topics_entries(uid)
+            entries_data = EntrySerializer(entries, many=True).data
+            paginator = Paginator(entries_data, 25)
+            logger.debug(
+                f"entries_data={entries_data}, topic_uid={uid}. paginator={paginator}"
+            )
+            page_obj = paginator.get_page(page_number)
+            logger.debug(f"page_obj={page_obj}, page_number {page_number}")
+        else:
+            best_entries = get_best_entries(uid)
+            entries_data = EntrySerializer(best_entries, many=True).data
+            logger.debug(f"entries_data={entries_data}, page_number {page_number}")
         top_topics = get_trending_topics()
         top_topics_data = TopicSerializer(top_topics, many=True).data
+        # logger.debug(f"entries_data={entries_data}, top_topics_data={top_topics_data}")
         context = {
             "user": request.user,
             "top_topics": top_topics_data,

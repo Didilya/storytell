@@ -10,4 +10,9 @@ urlpatterns = [
         views.TopicPageView.as_view(),
         name="topic",
     ),
+    path(
+        "topics/<str:uid>/",
+        views.TopicPageView.as_view(),
+        name="popular_entries",
+    ),
 ]

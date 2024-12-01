@@ -339,7 +339,7 @@
         <ul id="topic-list">
             {% for topic in top_topics %}
                 <li id="{{ topic.id }}" class="topic-item">
-                    <a href={{ topic.url }} class="topic-button">
+                <a href="{% url 'popular_entries' topic.uid %}" class="topic-button">
                         <span>{{ topic.title }}</span>
                     </a>
                     <span>{{ topic.entry_count }}</span>
@@ -351,9 +351,8 @@
 <div class="content" id="content-area">
     <h2 class="topic-title" id="topic-title"></h2>
     <div id="entries-container">
-        {% for entry in all_best_entries %}
+        {% for entry in entries %}
             <div class="entry">
-                <h3>{{ entry.title }}</h3>
                 <div class="entry-text">{{ entry.text }}</div>
                 <div id="{{ entry.uid }}" class="voting-buttons">
                     <button class="vote-button">⬆️</button>
@@ -374,7 +373,7 @@
         <!-- Pagination Buttons -->
         <div class="pagination-container">
             <!-- Use the 'with' tag to store the last entry -->
-            {% with all_best_entries|last as last_entry %}
+            {% with entries|last as last_entry %}
                 <!-- Dropdown for page numbers -->
                 <select class="pagination-dropdown" id="page-selector" onchange="loadPage(this.value)">
                     <!-- Dynamically populate the dropdown -->

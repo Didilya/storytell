@@ -39,7 +39,7 @@ class TopicSerializer(serializers.ModelSerializer):
         return obj.uid.hex
 
     def get_url(self, obj):
-        return f"topics/{obj.uid}/1"
+        return f"topics/{obj.uid}/"
 
 
 class EntrySerializer(serializers.ModelSerializer):

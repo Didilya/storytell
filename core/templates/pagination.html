@@ -1,0 +1,39 @@
+
+<div class="pagination-container">
+    {% with page_data as last_entry %}
+        <!-- Dropdown for page numbers -->
+        <select class="pagination-dropdown" id="page-selector" onchange="loadPage(this.value, last_entry.topic)">
+            <!-- Dynamically populate the dropdown -->
+        </select>
+        <script>
+        const lastPage = {{ last_entry.page }};
+        const topic = '{{ last_entry.topic }}';
+
+        // Function to create an array of page numbers
+        function generatePageNumbers(lastPage) {
+            const pageNumbers = [];
+            for (let i = 1; i <= lastPage; i++) {
+                pageNumbers.push(i);
+            }
+            return pageNumbers;
+        }
+
+        // Populate the dropdown
+        const pageSelector = document.getElementById('page-selector');
+        const pageNumbers = generatePageNumbers({{ last_entry.page }});
+
+        pageNumbers.forEach(pageNum => {
+            const option = document.createElement('option');
+            option.value = pageNum;
+            option.textContent = pageNum;
+            pageSelector.appendChild(option);
+        });
+        </script>
+
+        <!-- Last Page Button -->
+        <button class="pagination-button" onclick="loadPage({{ last_entry.page }}, '{{ last_entry.topic }}')">{{ last_entry.page }}</button>
+
+        <!-- Next Page Button -->
+        <button class="pagination-button" onclick="loadPage(currentPage + 1, '{{ last_entry.topic }}')" id="next-page-button">➡️</button>
+    {% endwith %}
+</div>

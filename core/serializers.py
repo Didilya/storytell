@@ -49,6 +49,7 @@ class EntrySerializer(serializers.ModelSerializer):
     created = serializers.SerializerMethodField()
     uid = serializers.SerializerMethodField()
     page = serializers.SerializerMethodField()
+    topic = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Entry
@@ -73,7 +74,7 @@ class EntrySerializer(serializers.ModelSerializer):
             return ""
 
     def get_page(self, obj):
-        return 10
+        return 5
 
     def get_title(self, obj):
         return self.context.get("title")
@@ -83,6 +84,9 @@ class EntrySerializer(serializers.ModelSerializer):
 
     def get_uid(self, obj):
         return obj.uid.hex
+
+    def get_topic(self, obj):
+        return obj.topic.uid.hex
 
 
 class FavoriteSerializer(serializers.ModelSerializer):

@@ -17,6 +17,7 @@ from users.serializers import UserSerializer
 from core.forms import TopicCreationForm, EntryCreationForm
 from django.http import JsonResponse
 from django.core import exceptions
+from django.template.loader import render_to_string
 from django.core.paginator import Paginator
 
 logger = logging.getLogger(__name__)
@@ -108,19 +109,20 @@ class AddFavorite(View):
         return redirect("/")
 
 
-class TopicPageView(TemplateResponseMixin, View):
+class TopicPopularEntries(TemplateResponseMixin, View):
     template_name = "entries_page.html"
 
     def get(self, request, uid, page_number=None, *args, **kwargs):
         if page_number:
             entries = get_topics_entries(uid)
-            entries_data = EntrySerializer(entries, many=True).data
-            paginator = Paginator(entries_data, 25)
-            logger.debug(
-                f"entries_data={entries_data}, topic_uid={uid}. paginator={paginator}"
-            )
+            entries = EntrySerializer(entries, many=True).data
+            paginator = Paginator(entries, 25)
+            logger.debug(f"topic_uid={uid}. paginator={paginator}")
             page_obj = paginator.get_page(page_number)
-            logger.debug(f"page_obj={page_obj}, page_number {page_number}")
+            logger.debug(
+                f"page_obj={page_obj}, page_number {page_number}, entries={page_obj.object_list}"
+            )
+            entries_data = page_obj.object_list
         else:
             best_entries = get_best_entries(uid)
             entries_data = EntrySerializer(best_entries, many=True).data
@@ -134,3 +136,26 @@ class TopicPageView(TemplateResponseMixin, View):
             "entries": entries_data,
         }
         return self.render_to_response(context)
+
+
+class TopicPageView(View):
+
+    def get(self, request, uid, page_number=None, *args, **kwargs):
+        entries = get_topics_entries(uid)
+        entries = EntrySerializer(entries, many=True).data
+        paginator = Paginator(entries, 25)
+        logger.debug(f"topic_uid={uid}. paginator={paginator}")
+        page_obj = paginator.get_page(page_number)
+        logger.debug(
+            f"page_obj={page_obj}, page_number {page_number}, entries={page_obj.object_list}"
+        )
+        entries_data = page_obj.object_list
+        return JsonResponse(
+            {
+                "entries": entries_data,
+                "pagination_html": render_to_string(
+                    "pagination.html", {"page_data": {"page":5,"topic": uid }}
+                ),
+            },
+            status=200,
+        )

@@ -12,7 +12,7 @@ urlpatterns = [
     ),
     path(
         "topics/<str:uid>/",
-        views.TopicPageView.as_view(),
+        views.TopicPopularEntries.as_view(),
         name="popular_entries",
     ),
 ]

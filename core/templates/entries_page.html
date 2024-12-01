@@ -371,16 +371,16 @@
         {% endfor %}
 
         <!-- Pagination Buttons -->
-        <div class="pagination-container">
+        <div id="pagination-container" class="pagination-container">
             <!-- Use the 'with' tag to store the last entry -->
             {% with entries|last as last_entry %}
                 <!-- Dropdown for page numbers -->
-                <select class="pagination-dropdown" id="page-selector" onchange="loadPage(this.value)">
+                <select class="pagination-dropdown" id="page-selector" onchange="loadPage(this.value, last_entry.topic)">
                     <!-- Dynamically populate the dropdown -->
                 </select>
                 <script>
-                // Assuming you have `last_entry.page` available via Django context
                 const lastPage = {{ last_entry.page }};
+                const topic = '{{ last_entry.topic }}';
 
                 // Function to create an array of page numbers
                 function generatePageNumbers(lastPage) {
@@ -404,10 +404,10 @@
             </script>
 
                 <!-- Last Page Button -->
-                <button class="pagination-button" onclick="loadPage({{ last_entry.page }})">{{ last_entry.page }}</button>
+                <button class="pagination-button" onclick="loadPage({{ last_entry.page }}, '{{ last_entry.topic }}')">{{ last_entry.page }}</button>
 
                 <!-- Next Page Button -->
-                <button class="pagination-button" onclick="loadPage(currentPage + 1)" id="next-page-button">➡️</button>
+                <button class="pagination-button" onclick="loadPage(currentPage + 1, '{{ last_entry.topic }}')" id="next-page-button">➡️</button>
             {% endwith %}
         </div>
 
@@ -564,25 +564,29 @@
 </script>
 
 <script>
-    function loadPage(pageNumber) {
+    function loadPage(pageNumber, topic) {
     // Fetch the entries for the selected page
-    fetch(`/get_entries?page=${pageNumber}`, {
+    fetch(`/topics/${topic}/${pageNumber}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            "X-CSRFToken": "{{ csrf_token }}",
         },
     })
+
     .then(response => response.json())
     .then(data => {
+        console.log(data.entries);
+        console.log(data.pagination_html);
         const entriesContainer = document.getElementById('entries-container');
+        const paginationContainer = document.querySelector('.pagination-container');
         entriesContainer.innerHTML = ''; // Clear previous entries
-
+        console.log(paginationContainer.innerHTML);
         // Populate the entries for the new page
         data.entries.forEach(entry => {
             const entryDiv = document.createElement('div');
             entryDiv.className = 'entry';
             entryDiv.innerHTML = `
-                <h3>${entry.title}</h3>
                 <div class="entry-text">${entry.text}</div>
                 <div id="${entry.uid}" class="voting-buttons">
                     <button class="vote-button">⬆️</button>
@@ -600,6 +604,9 @@
             `;
             entriesContainer.appendChild(entryDiv);
         });
+        // Create Pagination Buttons
+        paginationContainer.innerHTML = data.pagination_html;
+        entriesContainer.appendChild(paginationContainer);
     })
     .catch(error => {
         console.error('Error fetching entries:', error);

@@ -2,12 +2,13 @@
 <div class="pagination-container">
     {% with page_data as last_entry %}
         <!-- Dropdown for page numbers -->
-        <select class="pagination-dropdown" id="page-selector" onchange="loadPage(this.value, last_entry.topic)">
+        <select class="pagination-dropdown" id="page-selector" onchange="loadPage(this.value, '{{last_entry.topic}}')">
             <!-- Dynamically populate the dropdown -->
         </select>
         <script>
-        const lastPage = {{ last_entry.page }};
+        const lastPage = {{ last_entry.last_page }};
         const topic = '{{ last_entry.topic }}';
+        const currentPage = {{ last_entry.page }};
 
         // Function to create an array of page numbers
         function generatePageNumbers(lastPage) {
@@ -20,7 +21,7 @@
 
         // Populate the dropdown
         const pageSelector = document.getElementById('page-selector');
-        const pageNumbers = generatePageNumbers({{ last_entry.page }});
+        const pageNumbers = generatePageNumbers(lastPage);
 
         pageNumbers.forEach(pageNum => {
             const option = document.createElement('option');
@@ -31,9 +32,9 @@
         </script>
 
         <!-- Last Page Button -->
-        <button class="pagination-button" onclick="loadPage({{ last_entry.page }}, '{{ last_entry.topic }}')">{{ last_entry.page }}</button>
+        <button class="pagination-button" onclick="loadPage({{ last_entry.last_page }}, '{{ last_entry.topic }}')">{{ last_entry.last_page }}</button>
 
         <!-- Next Page Button -->
-        <button class="pagination-button" onclick="loadPage(currentPage + 1, '{{ last_entry.topic }}')" id="next-page-button">➡️</button>
+        <button class="pagination-button" onclick="loadPage({{ last_entry.page }} + 1, '{{ last_entry.topic }}')" id="next-page-button">➡️</button>
     {% endwith %}
 </div>

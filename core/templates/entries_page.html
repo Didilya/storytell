@@ -375,7 +375,7 @@
             <!-- Use the 'with' tag to store the last entry -->
             {% with entries|last as last_entry %}
                 <!-- Dropdown for page numbers -->
-                <select class="pagination-dropdown" id="page-selector" onchange="loadPage(this.value, last_entry.topic)">
+                <select class="pagination-dropdown" id="page-selector" onchange="loadPage(this.value, '{{last_entry.topic}}')">
                     <!-- Dynamically populate the dropdown -->
                 </select>
                 <script>
@@ -581,6 +581,7 @@
         const entriesContainer = document.getElementById('entries-container');
         const paginationContainer = document.querySelector('.pagination-container');
         entriesContainer.innerHTML = ''; // Clear previous entries
+        paginationContainer.innerHTML = ''; // Clear previous entries
         console.log(paginationContainer.innerHTML);
         // Populate the entries for the new page
         data.entries.forEach(entry => {

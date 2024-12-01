@@ -154,7 +154,8 @@ class TopicPageView(View):
             {
                 "entries": entries_data,
                 "pagination_html": render_to_string(
-                    "pagination.html", {"page_data": {"page":5,"topic": uid }}
+                    "pagination.html",
+                    {"page_data": {"page": page_number, "topic": uid, "last_page": 5}},
                 ),
             },
             status=200,

@@ -2,7 +2,7 @@ from core.models import Topic, Entry, Favorite, Vote
 from django.db.models import Count
 import logging
 from core.serializers import EntrySerializer
-from django.shortcuts import get_object_or_404
+from django.db.models import QuerySet
 import uuid
 
 logger = logging.getLogger(__name__)
@@ -36,9 +36,10 @@ def get_all_entries():
     )
 
 
-def get_topics_most_fav_entry(topic_ids):
+def get_topics_most_fav_entry(top_topics: QuerySet[Topic]) -> dict:
+    top_topics_ids = top_topics.values_list("id", flat=True)
     topics_fav_entry_list = []
-    for topic_id in topic_ids:
+    for topic_id in top_topics_ids:
         topic = Topic.objects.get(id=topic_id)
         queryset = (
             Entry.objects.filter(topic=topic)

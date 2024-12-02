@@ -28,7 +28,6 @@ class MainPageView(TemplateResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
         top_topics = get_trending_topics()
-        top_topics_ids = top_topics.values_list("id", flat=True)
         entries = get_all_entries()
         entries_data = EntrySerializer(entries, many=True).data
         top_topics_data = TopicSerializer(top_topics, many=True).data
@@ -37,7 +36,11 @@ class MainPageView(TemplateResponseMixin, View):
             "user": request.user,
             "entries": entries_data,
             "top_topics": top_topics_data,
-            "all_best_entries": get_topics_most_fav_entry(top_topics_ids),
+            "all_best_entries": get_topics_most_fav_entry(top_topics)[:25],
+            "pagination_html": render_to_string(
+                "pagination.html",
+                {"page_data": {"page": 1, "topic": 'all', "last_page": 5}},
+            ),
         }
         if request.user.is_authenticated:
             context["user_data"] = UserSerializer(request.user).data
@@ -112,21 +115,9 @@ class AddFavorite(View):
 class TopicPopularEntries(TemplateResponseMixin, View):
     template_name = "entries_page.html"
 
-    def get(self, request, uid, page_number=None, *args, **kwargs):
-        if page_number:
-            entries = get_topics_entries(uid)
-            entries = EntrySerializer(entries, many=True).data
-            paginator = Paginator(entries, 25)
-            logger.debug(f"topic_uid={uid}. paginator={paginator}")
-            page_obj = paginator.get_page(page_number)
-            logger.debug(
-                f"page_obj={page_obj}, page_number {page_number}, entries={page_obj.object_list}"
-            )
-            entries_data = page_obj.object_list
-        else:
-            best_entries = get_best_entries(uid)
-            entries_data = EntrySerializer(best_entries, many=True).data
-            logger.debug(f"entries_data={entries_data}, page_number {page_number}")
+    def get(self, request, uid, *args, **kwargs):
+        best_entries = get_best_entries(uid)
+        entries_data = EntrySerializer(best_entries, many=True).data
         top_topics = get_trending_topics()
         top_topics_data = TopicSerializer(top_topics, many=True).data
         # logger.debug(f"entries_data={entries_data}, top_topics_data={top_topics_data}")
@@ -134,6 +125,10 @@ class TopicPopularEntries(TemplateResponseMixin, View):
             "user": request.user,
             "top_topics": top_topics_data,
             "entries": entries_data,
+            "pagination_html": render_to_string(
+            "pagination.html",
+            {"page_data": {"page": 1, "topic": uid, "last_page": 5}}
+        ),
         }
         return self.render_to_response(context)
 
@@ -141,13 +136,18 @@ class TopicPopularEntries(TemplateResponseMixin, View):
 class TopicPageView(View):
 
     def get(self, request, uid, page_number=None, *args, **kwargs):
-        entries = get_topics_entries(uid)
-        entries = EntrySerializer(entries, many=True).data
-        paginator = Paginator(entries, 25)
-        logger.debug(f"topic_uid={uid}. paginator={paginator}")
+        if uid == "all":
+            entries_data = get_topics_most_fav_entry(get_trending_topics())
+            logger.debug(f"ALL case entries_data{entries_data}")
+        else:
+            entries = get_topics_entries(uid)
+            entries_data = EntrySerializer(entries, many=True).data
+            logger.debug(f"NOT ALL case entries_data{entries_data}")
+        paginator = Paginator(entries_data, 25)
         page_obj = paginator.get_page(page_number)
+
         logger.debug(
-            f"page_obj={page_obj}, page_number {page_number}, entries={page_obj.object_list}"
+            f"page_obj={page_obj}, page_number {page_number}, topic_uid={uid},entries={page_obj.object_list}"
         )
         entries_data = page_obj.object_list
         return JsonResponse(

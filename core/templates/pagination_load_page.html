@@ -1,0 +1,53 @@
+
+<script>
+    function loadPage(pageNumber, topic) {
+    // Fetch the entries for the selected page
+    fetch(`/topics/${topic}/${pageNumber}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            "X-CSRFToken": "{{ csrf_token }}",
+        },
+    })
+
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.entries);
+        console.log(data.pagination_html);
+        const entriesContainer = document.getElementById('entries-container');
+        const paginationContainer = document.querySelector('.pagination-container');
+        entriesContainer.innerHTML = ''; // Clear previous entries
+        paginationContainer.innerHTML = ''; // Clear previous entries
+        console.log(paginationContainer.innerHTML);
+        // Populate the entries for the new page
+        data.entries.forEach(entry => {
+            const entryDiv = document.createElement('div');
+            entryDiv.className = 'entry';
+            entryDiv.innerHTML = `
+                <div class="entry-text">${entry.text}</div>
+                <div id="${entry.uid}" class="voting-buttons">
+                    <button class="vote-button">⬆️</button>
+                    <button class="vote-button">⬇️</button>
+                    <button class="save-button" onclick="addToFavorite('${entry.uid}')">❤️</button>
+                    <span class="save-count">${entry.favorite_count}</span>
+                </div>
+                <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 10px;">
+                    <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                        <span class="user-name">${entry.user.profile_name}</span>
+                        <span class="entry-created" style="font-size: 0.7em; color: #999; margin-top: 3px;">${entry.created}</span>
+                    </div>
+                    <img src="${entry.user.thumbnail}" class="author-thumbnail">
+                </div>
+            `;
+            entriesContainer.appendChild(entryDiv);
+        });
+        // Create Pagination Buttons
+        paginationContainer.innerHTML = data.pagination_html;
+        entriesContainer.appendChild(paginationContainer);
+    })
+    .catch(error => {
+        console.error('Error fetching entries:', error);
+    });
+}
+
+</script>

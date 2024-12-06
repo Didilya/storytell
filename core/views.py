@@ -149,10 +149,9 @@ class TopicPageView(View):
         logger.debug(
             f"page_obj={page_obj}, page_number {page_number}, topic_uid={uid},entries={page_obj.object_list}"
         )
-        entries_data = page_obj.object_list
         return JsonResponse(
             {
-                "entries": entries_data,
+                "entries": page_obj.object_list,
                 "pagination_html": render_to_string(
                     "pagination.html",
                     {"page_data": {"page": page_number, "topic": uid, "last_page": 5}},

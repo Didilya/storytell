@@ -190,3 +190,4 @@ else:
 LOGIN_REDIRECT_URL = "/"  # Redirects users here after login
 LOGOUT_REDIRECT_URL = "/login/"  # Redirects users here after logout
 LOGIN_URL = "/login/"  # URL for the login page if accessing a protected view
+CSRF_TRUSTED_ORIGINS = ['https://didipies.com', 'http://didipies.com']

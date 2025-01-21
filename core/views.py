@@ -69,9 +69,7 @@ class AddTopicView(TemplateResponseMixin, View):
             messages.info(request, "You should Sign In to post topics and entries!")
             return redirect("login")  # Redirect to the login page
 
-        # Validate forms
         if topic_form.is_valid() and entry_form.is_valid():
-            # Save the topic and entry
             topic = topic_form.save(commit=False)
             topic.user = request.user
             topic.save()
@@ -79,7 +77,7 @@ class AddTopicView(TemplateResponseMixin, View):
             entry.topic = topic
             entry.user = request.user
             entry.save()
-            return redirect("/")  # Redirect to home or another success page
+            return redirect("/")
 
         # If forms are not valid, render the page with validation errors
         context = self.get_context_data(topic_form=topic_form, entry_form=entry_form)

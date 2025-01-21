@@ -49,16 +49,16 @@ class MainPageView(TemplateResponseMixin, View):
 
 class AddTopicView(TemplateResponseMixin, View):
     template_name = "add_topic.html"
-    context = {
-        "topic_form": TopicCreationForm(),
-        "entry_form": EntryCreationForm(),
-    }
+
+    def get_context_data(self, **kwargs):
+        context = {
+            "topic_form": kwargs.get("topic_form", TopicCreationForm()),
+            "entry_form": kwargs.get("entry_form", EntryCreationForm()),
+        }
+        return context
 
     def get(self, request, *args, **kwargs):
-        context = {
-            "topic_form": TopicCreationForm(),
-            "entry_form": EntryCreationForm(),
-        }
+        context = self.get_context_data()
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
@@ -66,10 +66,8 @@ class AddTopicView(TemplateResponseMixin, View):
         entry_form = EntryCreationForm(request.POST)
 
         if not request.user.is_authenticated:
-            messages.add_message(
-                request, messages.INFO, "You should Sign In to post topics and entries!"
-            )
-            return self.render_to_response(self.context)
+            messages.info(request, "You should Sign In to post topics and entries!")
+            return redirect("login")  # Redirect to the login page
 
         if topic_form.is_valid() and entry_form.is_valid():
             topic = topic_form.save(commit=False)
@@ -79,16 +77,12 @@ class AddTopicView(TemplateResponseMixin, View):
             entry.topic = topic
             entry.user = request.user
             entry.save()
-
             return redirect("/")
-        else:
-            self.render_to_response(self.context)
 
-        context = {
-            "topic_form": topic_form,
-            "entry_form": entry_form,
-        }
+        # If forms are not valid, render the page with validation errors
+        context = self.get_context_data(topic_form=topic_form, entry_form=entry_form)
         return self.render_to_response(context)
+
 
 
 class AddFavorite(View):

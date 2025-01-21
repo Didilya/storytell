@@ -47,11 +47,6 @@ class MainPageView(TemplateResponseMixin, View):
         return self.render_to_response(context)
 
 
-from django.shortcuts import redirect
-from django.contrib import messages
-from django.views.generic.base import TemplateResponseMixin, View
-from .forms import TopicCreationForm, EntryCreationForm
-
 class AddTopicView(TemplateResponseMixin, View):
     template_name = "add_topic.html"
 

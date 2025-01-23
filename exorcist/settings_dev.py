@@ -122,8 +122,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/exorcist_dev/storytell/static/'
+STATIC_URL = "/static/"
+STATIC_ROOT = "/var/www/exorcist_dev/storytell/static/"
 
 
 # Default primary key field
@@ -150,4 +150,4 @@ else:
 LOGIN_REDIRECT_URL = "/"  # Redirects users here after login
 LOGOUT_REDIRECT_URL = "/login/"  # Redirects users here after logout
 LOGIN_URL = "/login/"  # URL for the login page if accessing a protected view
-CSRF_TRUSTED_ORIGINS = ['https://didipies.com', 'http://didipies.com']
+CSRF_TRUSTED_ORIGINS = ["https://didipies.com", "http://didipies.com"]

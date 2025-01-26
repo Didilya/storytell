@@ -16,7 +16,6 @@ from core.serializers import TopicSerializer, EntrySerializer
 from users.serializers import UserSerializer
 from core.forms import TopicCreationForm, EntryCreationForm
 from django.http import JsonResponse
-from django.core import exceptions
 from django.template.loader import render_to_string
 from django.core.paginator import Paginator
 
@@ -39,7 +38,7 @@ class MainPageView(TemplateResponseMixin, View):
             "all_best_entries": get_topics_most_fav_entry(top_topics)[:25],
             "pagination_html": render_to_string(
                 "pagination.html",
-                {"page_data": {"page": 1, "topic": 'all', "last_page": 5}},
+                {"page_data": {"page": 1, "topic": "all", "last_page": 5}},
             ),
         }
         if request.user.is_authenticated:
@@ -67,7 +66,7 @@ class AddTopicView(TemplateResponseMixin, View):
 
         if not request.user.is_authenticated:
             messages.info(request, "You should Sign In to post topics and entries!")
-            return redirect("login")  # Redirect to the login page
+            return redirect("login")
 
         if topic_form.is_valid() and entry_form.is_valid():
             topic = topic_form.save(commit=False)
@@ -84,14 +83,11 @@ class AddTopicView(TemplateResponseMixin, View):
         return self.render_to_response(context)
 
 
-
 class AddFavorite(View):
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             data = {"error": "You should Sign In to add to favorites"}
-            return JsonResponse(
-                data, status=403
-            )  # or raise exceptions.PermissionDenied
+            return JsonResponse(data, status=403)
         data = json.loads(request.body)
         entry_uid = data.get("entry")
         logger.debug(f"FAVORITE DATA {data}")
@@ -120,9 +116,9 @@ class TopicPopularEntries(TemplateResponseMixin, View):
             "top_topics": top_topics_data,
             "entries": entries_data,
             "pagination_html": render_to_string(
-            "pagination.html",
-            {"page_data": {"page": 1, "topic": uid, "last_page": 5}}
-        ),
+                "pagination.html",
+                {"page_data": {"page": 1, "topic": uid, "last_page": 5}},
+            ),
         }
         return self.render_to_response(context)
 

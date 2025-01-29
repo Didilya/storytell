@@ -2,3 +2,5 @@
 .idea/
 /exorcist/.env
 *.log
+/cache/*
+/static/admin/*

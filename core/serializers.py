@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from users.serializers import UserSerializer
 from core import models
+from core.settings import core_settings
 import logging
 
 logger = logging.getLogger(__name__)
@@ -28,11 +29,11 @@ class TopicSerializer(serializers.ModelSerializer):
 
     def get_entry_count(self, obj):
         try:
-            if obj.entry_count != 0:
+            if obj.entry_count:
                 return obj.entry_count
             else:
                 return ""
-        except:
+        except Exception as e:
             return None
 
     def get_uid(self, obj):
@@ -66,18 +67,18 @@ class EntrySerializer(serializers.ModelSerializer):
 
     def get_favorite_count(self, obj):
         try:
-            if obj.favorite_count != 0:
+            if obj.favorite_count:
                 return obj.favorite_count
             else:
                 return 0
-        except:
+        except Exception as e:
             return ""
 
     def get_page(self, obj):
-        return 5
+        return core_settings.PAGINATION_NUMBER
 
     def get_title(self, obj):
-        return self.context.get("title")
+        return obj.context.get("title")
 
     def get_created(self, obj):
         return obj.created.strftime("%d.%m.%Y %H:%M")

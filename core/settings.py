@@ -8,6 +8,7 @@ DEFAULTS = {
     "MAX_ENTRY_CHARACTERS": env("MAX_ENTRY_CHARACTERS", default=1000000),
     "MIN_TOPIC_CHARACTERS": env("MAX_ENTRY_CHARACTERS", default=3),
     "MAX_TOPIC_CHARACTERS": env("MAX_ENTRY_CHARACTERS", default=255),
+    "PAGINATION_NUMBER": env("PAGINATION_NUMBER", default=50),
 }
 
 core_settings = ModuleSettings("CORE", DEFAULTS)

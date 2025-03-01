@@ -9,6 +9,7 @@ DEFAULTS = {
     "MIN_TOPIC_CHARACTERS": env("MAX_ENTRY_CHARACTERS", default=3),
     "MAX_TOPIC_CHARACTERS": env("MAX_ENTRY_CHARACTERS", default=255),
     "PAGINATION_NUMBER": env("PAGINATION_NUMBER", default=50),
+    "LLM_NODEL_API_KEY": env("LLM_NODEL_API_KEY", default=""),
 }
 
 core_settings = ModuleSettings("CORE", DEFAULTS)

@@ -6,7 +6,7 @@ client = OpenAI(api_key=core_settings.LLM_NODEL_API_KEY, base_url="https://api.d
 
 def get_first_llm_response(question: str) -> str| None:
     try:
-        if isinstance(question, str):
+        if isinstance(question, str):      # TODO add catching
             response = client.chat.completions.create(
                 model="deepseek-chat",
                 messages=[

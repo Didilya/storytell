@@ -1,0 +1,23 @@
+name: Merge Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.1
+
+      - name: Build
+        run: python manage.py runserver
+
+      - name: Run tests
+        run: python pytest .
+

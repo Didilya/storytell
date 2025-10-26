@@ -35,5 +35,9 @@ select = ["E", "F", "I"]
 ignore = ["E501"]
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "my_django_app.settings"
-python_files = ["tests.py", "test_*.py"]
+DJANGO_SETTINGS_MODULE = "exorcist.settings"
+python_files = ["test_*.py"]
+
+testpaths = [
+    "tests/*",
+]

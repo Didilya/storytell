@@ -10,3 +10,4 @@ psycopg2-binary==2.9.10
 sorl-thumbnail==12.11.0
 sqlparse==0.5.2
 typing-extensions==4.12.2
+pytest==8.4.2
